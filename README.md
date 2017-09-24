@@ -1,3 +1,13 @@
+### To run this project
+# git clone this-repo-url
+# cd mutual-test
+# npm start or yarn start
+# Scan QR code with Expo.
+
+### To run the tests
+# npm test (may require root access).
+
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
