@@ -1,32 +1,50 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import TocuhableCircle from './components/TouchableCircle'
+import { AsyncStorage } from 'react-native'
+
 
 export default class App extends React.Component {
   state = {
-    decreaseFirst: 0,
-    decreaseSecond:0
+    firstCount: 0,
+    secondCount: 0,
+    lastColor: '',
   }
 
-  decreaseFirst = () => {
-    this.setState({decreaseFirst: 1})
+  componentDidMount() {
+    AsyncStorage.getItem('state').then((value) => {
+      console.log('Retrieved from AsyncStorage ', value)
+      this.setState(JSON.parse(value));
+    }).done();
+
   }
 
   decreaseSecond = () => {
-    this.setState({decreaseSecond: 1})
+    let { firstCount, secondCount } = this.state
+    let newFirstCount = firstCount + 1
+    let newSecondCount = secondCount - 1
+    let newState = { firstCount: newFirstCount, secondCount: newSecondCount, lastColor: 'Green' }
+    AsyncStorage.setItem('state', JSON.stringify(newState));
+    this.setState(newState)
+  }
+
+  decreaseFirst = () => {
+    let { firstCount, secondCount } = this.state
+    let newFirstCount = firstCount - 1
+    let newSecondCount = secondCount + 1
+    let newState = { firstCount: newFirstCount, secondCount: newSecondCount, lastColor: 'Blue' }
+    AsyncStorage.setItem('state', JSON.stringify(newState));
+    this.setState(newState)
   }
 
 
   render() {
 
-    const firstCircleColor = 'blue';
-    const secondCircleColor = 'green';
-
-   
     return (
       <View style={styles.container}>
-        <TocuhableCircle decreaseValue={this.state.decreaseFirst} decreaseOther={this.decreaseSecond} count={this.state.countOne} onPress={this.sumOne} style={styles.firstCircle} />
-        <TocuhableCircle decreaseValue={this.state.decreaseSecond} decreaseOther={this.decreaseFirst} count={this.state.countTwo} onPress={this.sumTwo} style={styles.secondCircle} />
+          <TocuhableCircle decreaseOther={this.decreaseSecond} count={this.state.firstCount} style={styles.firstCircle} />
+          <Text>{this.state.lastColor}</Text>
+          <TocuhableCircle decreaseOther={this.decreaseFirst} count={this.state.secondCount} style={styles.secondCircle} />
       </View>
     );
   }
@@ -34,11 +52,15 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 6,
+    flex: 1,
     backgroundColor: '#a4a4a5',
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    paddingTop:50,
+    paddingBottom:50,
+    paddingLeft:20,
+    paddingRight:20, 
   },
   firstCircle: {
     width: 100,
@@ -49,7 +71,7 @@ const styles = StyleSheet.create({
   secondCircle: {
     width: 100,
     height: 100,
-    borderRadius: 100 / 2,
+    borderRadius: 50,
     backgroundColor: 'blue'
   }
 });
