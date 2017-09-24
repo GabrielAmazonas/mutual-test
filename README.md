@@ -1,6 +1,11 @@
 # To run this project
 ### git clone this-repo-url
 ### cd mutual-test
+
+#### (Optional)
+### sudo sysctl -w fs.inotify.max_user_instances=1024
+### sudo sysctl -w fs.inotify.max_user_watches=12288
+
 ### npm start or yarn start
 ### Scan QR code with Expo.
 
